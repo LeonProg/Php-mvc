@@ -20,15 +20,15 @@ use App\Services\Page;
 						<!-- Post -->
 						<article class="post">
 							<h1>Create post</h1>
-							<form action="#">
+							<form action="/create/post" method="post" enctype="multipart/form-data">
 								<label for="form-title">Post title</label>
-								<input id="form-title" type="text" placeholder="Post title"><br>
+								<input id="form-title" type="text" placeholder="Post title" name="title"><br>
 								<label for="form-description">Post description</label>
-								<textarea id="form-description" placeholder="Post description"></textarea><br>
+								<textarea id="form-description" placeholder="Post description" name="description"></textarea><br>
 								<label for="form-content">Post content</label>
-								<textarea id="form-content" placeholder="Post content"></textarea><br>
+								<textarea id="form-content" placeholder="Post content" name="content"></textarea><br>
 								<label for="form-image">Post image</label>
-								<input id="form-image" type="file"><br><br>
+								<input id="form-image" type="file" name="images"><br><br>
 								<input type="submit" value="Create">
 							</form>
 						</article>

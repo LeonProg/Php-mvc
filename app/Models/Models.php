@@ -2,24 +2,35 @@
 
 namespace App\Models;
 
+use App\Utils\ErrorConsts;
+use RedBeanPHP\OODBBean;
+
 class Models
 {
     public string $table;
 
-    public function findOne($id) : string
+    /**
+     * @param int $id
+     * @return OODBBean|string
+     */
+    public function findOne(int $id) : OODBBean|string
     {
-        $contents = \R::findOne($this->table, "id = ?", [$id]);
+        $contents = \R::findOne($this->table, "id = ? AND status = ? ", [$id,["publish", \PDO::PARAM_STR]]);
 
         if (isset($contents))
         {
-            echo $contents;
+            return $contents;
         }
-        return "Нету";
+
+        return ErrorConsts::REQUEST_ERROR;
     }
 
-    public function all() : array
+    /**
+     * @return array
+     */
+    public function all() :array
     {
-        $contents =\R::findCollection($this->table);
+        $contents =\R::findCollection($this->table, "status = ?", ["publish"]);
         $array = [];
         while ($content = $contents->next())
         {
@@ -28,4 +39,23 @@ class Models
 
         return ($array);
     }
+
+    /**
+     * @param $id
+     * @return OODBBean|string
+     */
+    public function findItem($id) :  OODBBean|string
+    {
+        $contents = \R::findOne($this->table, "id = ?", [$id]);
+
+        if (isset($contents))
+        {
+            return $contents;
+        }
+
+        return ErrorConsts::REQUEST_ERROR;
+    }
+
+
+
 }

@@ -56,7 +56,7 @@ class Auth extends Controller
          */
         if (Session::countErrors() === 0)
         {
-            $user = \R::dispense('users', );
+            $user = \R::dispense('users',);
             $user->name = $name;
             $user->email = $email;
             $user->password = md5($password);

@@ -16,7 +16,7 @@ class Router extends Authenticate
      * @param bool $isAuth
      * @return void
      */
-    public static function page(string $uri, string $page_name, bool $isAuth = false) : void
+    public static function page(string $uri, string $page_name, bool $isAuth = false, ) : void
     {
 
         self::$list[] = [
@@ -25,7 +25,6 @@ class Router extends Authenticate
             "post" => false,
             "isAuth" => $isAuth,
         ];
-
     }
 
     /**
@@ -61,25 +60,23 @@ class Router extends Authenticate
 
         foreach (self::$list as $route) {
 
-            if ($route["isAuth"])
-            {
-                if (self::isAuth())
-                {
-                    require_once "views/pages/" . $route["page"] . ".php";
-                } else {
-                    self::errorPage();
-                    die();
-                }
-            }
+//            if ($route["isAuth"])
+//            {
+//                if (self::isAuth())
+//                {
+//                    self::require($route["page"]);
+//                } else {
+//                    self::errorPage();
+//                    die();
+//                }
+//            }
 
-            if (isset($params[1]) && $route["uri"] .$params[1] === '/'.$query)
+            if (isset($params[1]) && $route["uri"] . $params[1] === '/'.$query)
             {
-                $id = $params[1];
-                echo $id;
+                self::require($route["page"]);
                 die();
-            }
+            } elseif ($route["uri"] === '/'.$query) {
 
-            if ($route["uri"] === '/'.$query) {
                 if ($route["post"])
                 {
                     $action = new $route["class"];
@@ -94,7 +91,7 @@ class Router extends Authenticate
                         $action->$method();
                     }
                 } else {
-                    require_once "views/pages/" . $route["page"] . ".php";
+                    self::require($route["page"]);
                 }
                 die();
             }
@@ -112,6 +109,10 @@ class Router extends Authenticate
         require_once "views/pages/error.php";
     }
 
+    private static function require($route)
+    {
+        require_once "views/pages/" . $route . ".php";
+    }
 
     /**
      * Redirect function
